@@ -1,0 +1,5 @@
+9fans.net/go v0.0.2/go.mod h1:lfPdxjq9v8pVQXUMBCx5EO5oLXWQFlKRQgs1kEkjoIM=
+github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
+github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/SSHcom/privx-sdk-go v0.0.0-20200617034327-242cbd1b35be h1:y3bLul6615VRxQnUjjtyN6XfV3DCMEDEyzf3K84FM6w=
+github.com/SSHcom/privx-sdk-go v0.0.0-20200617034327-242cbd1b35be/go.mod h1:MBMEtcBvvHCCOWZC4udSCJzW78sG90kmqBtB22Fr9gg=
