@@ -1,0 +1,34 @@
+{
+  "name": "privx-extender",
+  "version": "0.0.0",
+  "description": "PrivX: Extension of AWS VPC ",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-cdk/assert": "1.38.0",
+    "@aws-cdk/aws-ecs": "1.38.0",
+    "@aws-cdk/aws-autoscaling": "1.38.0",
+    "@aws-cdk/aws-ec2": "1.38.0",
+    "@aws-cdk/aws-iam": "1.38.0",
+    "@aws-cdk/aws-logs": "1.38.0",
+    "@aws-cdk/core": "1.38.0",
+    "@ssh.com/c3": "^0.5.3",
+    "@types/node": "13.13.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "coveralls": "^3.1.0",
+    "jest": "^26.0.1",
+    "prettier": "^2.0.5",
+    "ts-jest": "^25.5.0",
+    "ts-node": "^8.10.1",
+    "tslint": "^6.1.2",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "lint": "tslint -p tsconfig.json",
+    "test": "jest --no-cache --coverage",
+    "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+  }
+}

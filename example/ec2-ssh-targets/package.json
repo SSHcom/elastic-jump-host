@@ -1,0 +1,19 @@
+{
+  "name": "ec2-ssh-targets",
+  "version": "0.0.0",
+  "description": "Example: EC2 SSH targets with Extension on AWS VPC",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-cdk/core": "*",
+    "@ssh.com/c3": "^0.6.1",
+    "@types/node": "13.13.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
+  }
+}
