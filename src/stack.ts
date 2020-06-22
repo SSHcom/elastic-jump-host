@@ -1,6 +1,7 @@
 import * as cdk from '@aws-cdk/core'
 import * as ec2 from '@aws-cdk/aws-ec2'
 import * as ecs from '@aws-cdk/aws-ecs'
+import * as iam from '@aws-cdk/aws-iam'
 import * as path from 'path'
 import { Extender } from './extender'
 
@@ -26,5 +27,16 @@ export class Stack extends cdk.Stack {
       apiClientSecret,
       apiOAuth2Secret,
     })
+
+    //
+    //
+    const hostscan = new iam.User(this, 'hostscan')
+    hostscan.addToPolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        resources: [`*`],
+        actions: ['ec2:Describe*'],
+      })
+    )
   }
 }

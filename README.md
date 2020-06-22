@@ -102,9 +102,13 @@ cdk deploy extender-yourname \
   -c oauth2-secret=your-oauth-secret
 ```
 
-In few minutes, your own instance of PrivX Extender is available. PrivX UI shows its status.
+In few minutes, your own instance of PrivX Extender is available. Login to PrivX to observe its status.
 
-As post install stage, you can validate functionality of PrivX Extender with example SSH targets
+## Next Steps
+
+Usage of [AWS Host Directory](https://help.ssh.com/support/solutions/articles/36000194728-getting-started-with-privx#privx-gettingstarted-hostdirectories) is an easiest way to on-board hosts from your AWS account. Please note, this stack creates AWS User `extender-yourname-hostscan` with only `ec2:Describe*` permission. Use it for the directory definition. 
+
+As post install stage, you can validate functionality of PrivX Extender with example SSH targets. Use this example to automate your IaC delivery.
 
 ```bash
 cdk example/ec2-ssh-targets
