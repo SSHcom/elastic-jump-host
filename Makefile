@@ -3,7 +3,9 @@
 all: | node_modules
 	@npm run build
 	@npm run lint
-	@npm run test
+
+# No tests yet!
+#	@npm run test
 
 node_modules:
 	@npm install
