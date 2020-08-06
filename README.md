@@ -4,7 +4,7 @@ AWS VPC with private subnets is a right approach to deploy a EC2-based workload.
 
 ## Challenge 
 
-A classical multi-tier architecture built with with public and private subnets. It is recommended to run only an Internet-facing access point on public IP, while keeping other components inside private networks. Here is a common example with AWS: Application Load Balancer runs on public network; database servers and virtual machines on private. How do you implement the control plane in this architecture? Despite the Infrastructure as a Code solutions, engineering teams still must access instances to conduct experiments and probe configurations, consult system logs, or debug application issues. Secure Shell (SSH) and Remote Desktop (RDP) are protocols to access Linux/Windows servers.  
+A classical multi-tier architecture built with public and private subnets. It is recommended to run only an Internet-facing access point on public IP, while keeping other components inside private networks. Here is a common example with AWS: Application Load Balancer runs on a public network; database servers and virtual machines on private. How do you implement the control plane in this architecture? Despite the Infrastructure as a Code solutions, engineering teams still must access instances to conduct experiments and probe configurations, consult system logs, or debug application issues. Secure Shell (SSH) and Remote Desktop (RDP) are protocols to access Linux/Windows servers.  
 
 Usage of jump hosts, bastions, VPNs or other naive access gateways causes a risk of security threats. These threats are connected with needs to maintain access credentials, store, rotate and share them. According to Verizon report, 81% of all breaches are caused by stolen credentials. Many are struggling to properly manage credentials and prevent credentials-related attacks.
 
@@ -32,12 +32,12 @@ Just for your information, this project utilizes serverless technology to run th
 
 ## Getting Started
 
-The latest version of Infrastructure as a Code is available at main branch of this repository. All development, including new features and bug fixes, take place on the master branch using forking and pull requests as described in contribution guidelines. If your find any issue with the project or missing a feature please open an [issue to us](https://github.com/SSHcom/extender-on-aws/issues).
+The latest version of Infrastructure as a Code is available at the main branch of this repository. All development, including new features and bug fixes, take place on the master branch using forking and pull requests as described in contribution guidelines. If you find any issue with the project or missing a feature please open an [issue to us](https://github.com/SSHcom/extender-on-aws/issues).
 
 
 1. Sign Up for [PrivX SaaS](https://signup.privx.io/leanpam/).
 
-2. Obtain [access to target AWS Account](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html). You shall have ability to create/delete AWS resources. Ultimately, you are deploying this solution to your own AWS account.
+2. Obtain [access to target AWS Account](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html). You shall have the ability to create/delete AWS resources. Ultimately, you are deploying this solution to your own AWS account.
 
 3. Clone extender-on-aws repository
 ```bash
@@ -74,11 +74,11 @@ cdk bootstrap aws://${CDK_DEFAULT_ACCOUNT}/${CDK_DEFAULT_REGION}
 ```
 
 8. Obtain access/secret keys from PrivX Instance so that the extender is able to configure an access to your private subnet. 
-  1. Login as `superuser`
-  2. Go to: Settings > Deployment > Integrate with PrivX Using API clients
-  3. Create new API client (or use existing one)
-  4. Give a client permissions: `api-clients-manage`, `roles-view`, `roles-manage`
-  5. Deployment process requires: `OAuth Client Secret`, `API Client ID` and `API Client Secret` values. 
+  - Login as `superuser`
+  - Go to: Settings > Deployment > Integrate with PrivX Using API clients
+  - Create new API client (or use existing one)
+  - Give a client permissions: `api-clients-manage`, `roles-view`, `roles-manage`
+  - Deployment process requires: `OAuth Client Secret`, `API Client ID` and `API Client Secret` values. 
 
 9. Use AWS CDK command line tools to deploy PrivX extender to your AWS Account
 ```bash
@@ -92,7 +92,7 @@ cdk deploy extender-yourname \
 
 ## Note the deployment requires:
 ##    name           Unique name of the extender. It MUST contain only latin letters 
-##                   and digits. These name is used to create a role and name ssh key pair.
+##                   and digits. This name is used to create a role and name ssh key pair.
 ##
 ##    vpc            Unique identity of existing VPC, extender is deployed to this VPC.
 ##
@@ -106,14 +106,14 @@ cdk deploy extender-yourname \
 ##
 ```
 
-10. In few minutes, your own instance of PrivX Extender is available. Login to PrivX to observe its status.
+10. In a few minutes, your own instance of PrivX Extender is available. Login to PrivX to observe its status.
 
 
 ## Next Steps
 
 Usage of [AWS Host Directory](https://help.ssh.com/support/solutions/articles/36000194728-getting-started-with-privx#privx-gettingstarted-hostdirectories) is an easiest way to on-board hosts from your AWS account. Please note, this stack creates AWS User `extender-yourname-hostscan` with only `ec2:Describe*` permission. Use it for the directory definition. 
 
-As post install stage, you can validate functionality of PrivX Extender with example SSH targets. Use this example to automate your IaC delivery.
+As a post install stage, you can validate functionality of PrivX Extender with example SSH targets. Use this example to automate your IaC delivery.
 
 ```bash
 cdk example/ec2-ssh-targets
@@ -126,11 +126,11 @@ cdk deploy ec2-ssh-targets \
 
 ## Bugs
 
-If you experience any issues with the library, please let us know via [GitHub issues](https://github.com/SSHcom/extender-on-aws/issues). We appreciate detailed and accurate reports that help us to identity and replicate the issue.
+If you experience any issues with the library, please let us know via [GitHub issues](https://github.com/SSHcom/extender-on-aws/issues). We appreciate detailed and accurate reports that help us to identify and replicate the issue.
 
 * **Specify** the configuration of your environment. Include which operating system you use and the versions of runtime environments.
 
-* **Attach** logs, screenshots and exceptions, in possible.
+* **Attach** logs, screenshots and exceptions, if possible.
 
 * **Reveal** the steps you took to reproduce the problem, include code snippet or links to your project.
 
