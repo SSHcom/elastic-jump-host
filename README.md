@@ -1,37 +1,60 @@
 # PrivX Extender on AWS
 
-AWS VPC with private subnets is a right approach to deploy a EC2-based workload. A challenge is the access to these nodes!
-PrivX Extender along with [PrivX SaaS](https://privx.io) implements Zero Trust, password/key-less access solution for EC2 instances. 
+AWS VPC with private subnets is a right approach to deploy a EC2-based workload. A challenge is the access to these nodes without getting into credential management trouble. PrivX Extender along with [PrivX SaaS](https://signup.privx.io/leanpam/) implements Zero Trust, password/key-less access solution for EC2 instances.
+
+## Challenge 
+
+A classical multi-tier architecture built with with public and private subnets. It is recommended to run only an Internet-facing access point on public IP, while keeping other components inside private networks. Here is a common example with AWS: Application Load Balancer runs on public network; database servers and virtual machines on private. How do you implement the control plane in this architecture? Despite the Infrastructure as a Code solutions, engineering teams still must access instances to conduct experiments and probe configurations, consult system logs, or debug application issues. Secure Shell (SSH) and Remote Desktop (RDP) are protocols to access Linux/Windows servers.  
+
+Usage of jump hosts, bastions, VPNs or other naive access gateways causes a risk of security threats. These threats are connected with needs to maintain access credentials, store, rotate and share them. According to Verizon report, 81% of all breaches are caused by stolen credentials. Many are struggling to properly manage credentials and prevent credentials-related attacks.
+
+Think beyond VPNs, jump hosts or bastion hosts...
 
 
 ## Inspiration
 
-Having seen how permanent passwords and left-behind and forgotten SSH keys enable access to critical environments years after they were actually created and needed, we started the PrivX project in order to get rid of the passwords and keys – to get rid of any permanent access altogether.
+Having seen how permanent passwords and left-behind and forgotten credentials enable access to critical environments years after they were actually created and needed, we started the PrivX SaaS in order to get rid of the passwords and keys – to get rid of any permanent access altogether.
 
-PrivX Extender enables PrivX to reach fire-walled private networks or virtual private clouds. Once deployed in the private network, it will establish a number of websocket connections to PrivX to route traffic from PrivX proxies to the target network. Learn more about [PrivX Architecture here](https://help.ssh.com/support/solutions/articles/36000205951-privx-architecture).
+PrivX SaaS builds a solution for you that only grants access when it's needed & on the level needed, so called Zero Trust identity. It automates the process of granting and revoking access by integrating & fetching identities and roles from your identity management system and ensures your engineering and admin staff have one-click access to the right infrastructure resources at the right access level. You will also get full audit trail and monitoring - vital if you are handling sensitive data or for example open access for third parties to your environment. All access to enterprise resources is fully authenticated, fully authorized, and fully encrypted based upon device state and user credentials.
 
-The configuration of Extender requires a few manual steps. This project automates required steps and delivers them using Infrastructure as a Code:
-
-1. Acquire the hardware to run PrivX Extender.
-2. Install PrivX Extender using RPM package.
-3. Register the extender to with PrivX instance.
-4. Create a PrivX role that govern access for PrivX users.
-5. Import SSH Key and binds it with target nodes. 
-
-The following architecture diagram highlights the entire solution.
+PrivX Extender enables PrivX to reach fire-walled private networks or virtual private clouds. Once deployed in the private network, it will establish a number of websocket connections to PrivX to route traffic from PrivX proxies to the target network. Here is the Infrastructure as a Code, it eliminates an engineering toil on PrivX Extender deployment to your AWS account.
 
 ![PrivX Extender and Its Environment](doc/arch.svg "PrivX Extender and Its Environment")
+
+This solution goes beyond the deployment. It automates few extra required configuration steps:
+* registers the extender with your PrivX SaaS instance;
+* creates the PrivX role that govern control plane access to this VPC;
+* imports requires SSH keys to target AWS account so that target EC2 instances are accessible via PrivX;
+* optionally it automatically enables access to target nodes.
+
+Just for your information, this project utilizes serverless technology to run the extender deployment. Everything is managed for you!
 
 
 ## Getting Started
 
-The latest version of Infrastructure as a Code is available at `master` branch of the repository. All development, including new features and bug fixes, take place on the master branch using forking and pull requests as described in contribution guidelines.
+The latest version of Infrastructure as a Code is available at main branch of this repository. All development, including new features and bug fixes, take place on the master branch using forking and pull requests as described in contribution guidelines. If your find any issue with the project or missing a feature please open an [issue to us](https://github.com/SSHcom/extender-on-aws/issues).
 
 
-### Requirements
+1. Sign Up for [PrivX SaaS](https://signup.privx.io/leanpam/).
 
-1. We are using [AWS CDK](https://github.com/aws/aws-cdk) and [TypeScript](https://github.com/microsoft/typescript) to code this Infrastructure as a Code project. You have to configure your development environment with [node and npm](https://nodejs.org/en/download/) version 10.x or later and install required components.
+2. Obtain [access to target AWS Account](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html). You shall have ability to create/delete AWS resources. Ultimately, you are deploying this solution to your own AWS account.
 
+3. Clone extender-on-aws repository
+```bash
+git clone https://github.com/SSHcom/extender-on-aws
+cd extender-on-aws
+```
+
+4. Configure access rights to your AWS account
+```bash
+export AWS_ACCESS_KEY_ID=Your-Access-Key
+export AWS_SECRET_ACCESS_KEY=Your-Secret-Key
+export CDK_DEFAULT_ACCOUNT=Your-Account-Id
+export CDK_DEFAULT_REGION=eu-west-1
+export AWS_DEFAULT_REGION=eu-west-1
+```
+
+5. We are using [AWS CDK](https://github.com/aws/aws-cdk) and [TypeScript](https://github.com/microsoft/typescript) to code this Infrastructure as a Code project. You have to configure your development environment with [node and npm](https://nodejs.org/en/download/) version 10.x or later and install required components.
 ```bash
 ## with brew on MacOS
 brew install node
@@ -40,59 +63,25 @@ brew install node
 npm install -g typescript ts-node aws-cdk
 ```
 
-2. Obtain [access to target AWS Account](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html). You shall have ability to create/delete AWS resources. Ultimately, you are deploying this solution to your own AWS account.
-
-3. This is only an extension to existing PrivX deployment. You have to obtain either [PrivX SaaS](https://privx.io) instance or built it [yourself](https://github.com/SSHcom/privx-on-aws).
-
-
-### Deployments
-
-Use AWS CDK command line tools to deploy PrivX to your AWS Account. **Please note**, the process consists of multiple stages:
-
+6. Install dependencies
 ```bash
-##
-## 1. clone extender-on-aws repository locally
-git clone https://github.com/SSHcom/extender-on-aws
-cd extender-on-aws
-
-##
-## 2. pre-config deployment process by configure environment and
-##    installing dependent components  
-export AWS_ACCESS_KEY_ID=Your-Access-Key
-export AWS_SECRET_ACCESS_KEY=Your-Secret-Key
-export CDK_DEFAULT_ACCOUNT=Your-Account-Id
-export CDK_DEFAULT_REGION=eu-west-1
-export AWS_DEFAULT_REGION=eu-west-1
 npm install
+```
 
-##
-## 3. configure and bootstrap target AWS region with AWS CDK.
-##    You have to bootstrap a region only once during life time
+7. Configure and bootstrap target AWS region with AWS CDK. You have to bootstrap a region only once during life time
+```bash
 cdk bootstrap aws://${CDK_DEFAULT_ACCOUNT}/${CDK_DEFAULT_REGION}
+```
 
-##
-## 4. obtain access/secret keys from PrivX Instance.
-##    a) login as superuser
-##    b) Settings > Deployment > Integrate with PrivX Using API clients
-##    c) create new API client (or use existing one)
-##    d) give a client permissions: api-clients-manage, roles-view, roles-manage
-##    e) deployment process requires: OAuth Client Secret, API Client ID and API Client Secret 
-##
+8. Obtain access/secret keys from PrivX Instance so that the extender is able to configure an access to your private subnet. 
+  1. Login as `superuser`
+  2. Go to: Settings > Deployment > Integrate with PrivX Using API clients
+  3. Create new API client (or use existing one)
+  4. Give a client permissions: `api-clients-manage`, `roles-view`, `roles-manage`
+  5. Deployment process requires: `OAuth Client Secret`, `API Client ID` and `API Client Secret` values. 
 
-## 5. deploy PrivX Extender you need to define a few variables here
-##    name           Unique name of the extender. It MUST contain only latin letters 
-##                   and digits. These name is used to create a role and name ssh key pair.
-##
-##    vpc            Unique identity of existing VPC, extender is deployed to this VPC.
-##
-##    api            HTTPS address to PrivX API (e.g. https://example.privx.io)
-##
-##    client-id      Your API-Client-ID, see stage 4
-##
-##    client-secret  Your API-Client-Secret, see stage 4
-##
-##    oauth2-secret  Your OAuth-Client-Secret, see stage 4
-##
+9. Use AWS CDK command line tools to deploy PrivX extender to your AWS Account
+```bash
 cdk deploy extender-yourname \
   -c name=yourname \
   -c vpc=vpc-00000000000000000 \
@@ -100,9 +89,25 @@ cdk deploy extender-yourname \
   -c client-id=your-api-client-id \
   -c client-secret=your-api-client-secret \
   -c oauth2-secret=your-oauth-secret
+
+## Note the deployment requires:
+##    name           Unique name of the extender. It MUST contain only latin letters 
+##                   and digits. These name is used to create a role and name ssh key pair.
+##
+##    vpc            Unique identity of existing VPC, extender is deployed to this VPC.
+##
+##    api            HTTPS address to PrivX API (e.g. https://example.privx.io)
+##
+##    client-id      Your API-Client-ID, see previous stage
+##
+##    client-secret  Your API-Client-Secret, see previous stage
+##
+##    oauth2-secret  Your OAuth-Client-Secret, see previous stage
+##
 ```
 
-In few minutes, your own instance of PrivX Extender is available. Login to PrivX to observe its status.
+10. In few minutes, your own instance of PrivX Extender is available. Login to PrivX to observe its status.
+
 
 ## Next Steps
 
@@ -155,6 +160,10 @@ npm run build
 npm run test
 npm run lint
 ```
+
+## References
+
+1. [Passwords Are Still a Problem According to the 2019 Verizon Data Breach Investigations Report](http://blog.lastpass.com/2019/05/passwords-still-problem-according-2019-verizon-data-breach-investigations-report/)
 
 ## License
 
