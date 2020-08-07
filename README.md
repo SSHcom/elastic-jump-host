@@ -1,33 +1,39 @@
 # PrivX Extender on AWS
 
-AWS VPC with private subnets is a right approach to deploy a EC2-based workload. A challenge is the access to these nodes without getting into credential management trouble. PrivX Extender along with [PrivX SaaS](https://signup.privx.io/leanpam/) implements Zero Trust, password/key-less access solution for EC2 instances.
+When deploying EC2-based workloads, using an AWS VPC with private subnets is the standard way to achieve the needed security and isolation. Accessing the instances becomes a challenge as the means of entry need be enabled both on the network and credential level - not to forget that the configuration lifecycle needs to also be managed. 
+
+PrivX Extender along with [PrivX SaaS](https://signup.privx.io/leanpam/) implements a Zero Trust, passwordless and keyless access solution for EC2 instances.
+
 
 ## Challenge 
 
-A classical multi-tier architecture built with public and private subnets. It is recommended to run only an Internet-facing access point on public IP, while keeping other components inside private networks. Here is a common example with AWS: Application Load Balancer runs on a public network; database servers and virtual machines on private. How do you implement the control plane in this architecture? Despite the Infrastructure as a Code solutions, engineering teams still must access instances to conduct experiments and probe configurations, consult system logs, or debug application issues. Secure Shell (SSH) and Remote Desktop (RDP) are protocols to access Linux/Windows servers.  
+A classic multi-tier architecture is built upon public and private subnets. It is highly recommended to expose the internet-facing access point on the public subnet while keeping all other components in publicly inaccessible private subnet. 
 
-Usage of jump hosts, bastions, VPNs or other naive access gateways causes a risk of security threats. These threats are connected with needs to maintain access credentials, store, rotate and share them. According to Verizon report, 81% of all breaches are caused by stolen credentials. Many are struggling to properly manage credentials and prevent credentials-related attacks.
+A common deployment model using Amazon Web Services is an Application Load Balancer running in a public subnet whereas instances running the actual application, the database servers and other backend components are placed in a private subnet. How to implement a control plane for this architecture? Even if using Infrastructure as a Code (highly recommended), the reality is that engineering teams still require access to instances to conduct experiments, probe configurations, consult system logs or debug application issues. This is usually done via Secure Shell (SSH) or Remote Desktop (RDP) protocols on Linux and Windows platforms.
 
-Think beyond VPNs, jump hosts or bastion hosts...
+Using one-off jump host instances with shared SSH keys, bastions, VPNs or other naïve access gateways increases the deployment complexity, the amount of manual work through having to keep software and credentials up to date so actually they become a security threat. According to a Verizon report, 81% of all breaches are caused by stolen credentials. Teams are struggling to properly manage credentials and prevent credential-related attacks.
+
+Think beyond VPNs, dumb one-off jump hosts or bastion hosts...
 
 
 ## Inspiration
 
-Having seen how permanent passwords and left-behind and forgotten credentials enable access to critical environments years after they were actually created and needed, we started the PrivX SaaS in order to get rid of the passwords and keys – to get rid of any permanent access altogether.
+Throughout the years, having observed how permanent passwords and left-behind, forgotten credentials still grant access to critical environments years after they were created and needed, we started the [PrivX SaaS](https://signup.privx.io/leanpam/) projects. We wanted to rid the world of passwords and keys laying on disk, and of standing privileges in general.
 
-PrivX SaaS builds a solution for you that only grants access when it's needed & on the level needed, so called Zero Trust identity. It automates the process of granting and revoking access by integrating & fetching identities and roles from your identity management system and ensures your engineering and admin staff have one-click access to the right infrastructure resources at the right access level. You will also get full audit trail and monitoring - vital if you are handling sensitive data or for example open access for third parties to your environment. All access to enterprise resources is fully authenticated, fully authorized, and fully encrypted based upon device state and user credentials.
+[PrivX SaaS](https://signup.privx.io/leanpam/) provides a solution for granting just in time access only for the needed resources, often called Zero Trust access. The solution automates the process of granting and revoking access by integrating with an existing identity management system (it also comes with its own!) and ensures that the users have one click access to right infrastructure resources with correct privileges. It also provides full audit trail and monitoring which is vital if your users are handling sensitive data or if you need to provide access for 3rd parties to your environment. All access to enterprise resources is fully authenticated, fully authorized, and fully encrypted based upon device state and user credentials.
 
-PrivX Extender enables PrivX to reach fire-walled private networks or virtual private clouds. Once deployed in the private network, it will establish a number of websocket connections to PrivX to route traffic from PrivX proxies to the target network. Here is the Infrastructure as a Code, it eliminates an engineering toil on PrivX Extender deployment to your AWS account.
+PrivX Extender enables PrivX to reach firewalled private networks or virtual private clouds. Once deployed to a private network, it establishes a number of secure websocket connections to PrivX SaaS for routing traffic from the end users accessing PrivX to the target network. This project will provide IaaC (Infrastructure as a Code) deployment of PrivX Extender to an AWS account.
 
 ![PrivX Extender and Its Environment](doc/arch.svg "PrivX Extender and Its Environment")
 
-This solution goes beyond the deployment. It automates few extra required configuration steps:
-* registers the extender with your PrivX SaaS instance;
-* creates the PrivX role that govern control plane access to this VPC;
-* imports requires SSH keys to target AWS account so that target EC2 instances are accessible via PrivX;
-* optionally it automatically enables access to target nodes.
+In addition to deploying PrivX extender, this CDK project will also configure the environment for its use:
 
-Just for your information, this project utilizes serverless technology to run the extender deployment. Everything is managed for you!
+* Automatically register the extender to your PrivX SaaS instance;
+* Creates a PrivX role to AWS which governs the control plane access to the VPC in question;
+* imports requires SSH keys to target AWS account so that target EC2 instances are accessible via PrivX;
+* It can also automatically enable access to target nodes via instance tags.
+
+The project utilizes serverless to run the PrivX Extender on the AWS account - everything is managed for you!
 
 
 ## Getting Started
