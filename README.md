@@ -11,7 +11,7 @@ A classic multi-tier architecture is built upon public and private subnets. It i
 
 A common deployment model using Amazon Web Services is an Application Load Balancer running in a public subnet whereas instances running the actual application, the database servers and other backend components are placed in a private subnet. How to implement a control plane for this architecture? Even if using Infrastructure as a Code (highly recommended), the reality is that engineering teams still require access to instances to conduct experiments, probe configurations, consult system logs or debug application issues. This is usually done via Secure Shell (SSH) or Remote Desktop (RDP) protocols on Linux and Windows platforms.
 
-Using one-off jump host instances with shared SSH keys, bastions, VPNs or other naïve access gateways increases the deployment complexity, the amount of manual work through having to keep software and credentials up to date so actually they become a security threat. According to a Verizon report, 81% of all breaches are caused by stolen credentials. Teams are struggling to properly manage credentials and prevent credential-related attacks.
+Using one-off jump host instances with shared SSH keys, bastions, VPNs or other naïve access gateways increases the deployment complexity, the amount of manual work through having to keep software and credentials up to date so actually they become a security threat. For example, setting up a Linux bastion for SSH requires: provisioning a bastion EC2 instance on a public subnet, hardening the security groups, instance configuration and limiting IAM access; setting up auditing. This solution works for small teams but it comes with few disadvantages: SSH port 22 is publicly open; SSH keys are still managed manually and private keys are stored on engineering team's laptops. According to a Verizon report, 81% of all breaches are caused by stolen credentials. Teams are struggling to properly manage credentials and prevent credential-related attacks.
 
 Think beyond VPNs, dumb one-off jump hosts or bastion hosts...
 
@@ -129,6 +129,16 @@ cdk deploy ec2-ssh-targets \
   -c name=yourname \
   -c vpc=vpc-00000000000000000
 ```
+
+
+## Afterwords 
+
+Access management with [PrivX SaaS](https://signup.privx.io/leanpam/) is different to compare with traditional bastion solution: 
+* all target hosts are accessible via a central cloud service, either via browser or native SSH/RDP client;
+* instead of using a publicly visible bastion server, the PrivX extender is deployed on the private subnet. It forms an outbound connection to the central management instance, no inbound ports need to be opened;
+* PrivX SaaS acts as a central authority with no private keys or standing credentials on the laptops;
+* all access to targets hosts is governed by Single Sign On using O365 and GSuite, among others.
+
 
 ## Bugs
 
