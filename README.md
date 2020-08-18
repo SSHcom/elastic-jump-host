@@ -60,8 +60,11 @@ export CDK_DEFAULT_REGION=eu-west-1
 export AWS_DEFAULT_REGION=eu-west-1
 ```
 
-5. We are using [AWS CDK](https://github.com/aws/aws-cdk) and [TypeScript](https://github.com/microsoft/typescript) to code this Infrastructure as a Code project. You have to configure your development environment with [node and npm](https://nodejs.org/en/download/) version 10.x or later and install required components.
+5. We are using [AWS CDK](https://github.com/aws/aws-cdk), [TypeScript](https://github.com/microsoft/typescript) and [Docker](https://docs.docker.com/get-docker/) to code this Infrastructure as a Code project. You have to configure your development environment with [node and npm](https://nodejs.org/en/download/) version 10.x or later and install required components.
 ```bash
+## follow the link about Docker installation instructions 
+## https://docs.docker.com/get-docker/
+
 ## with brew on MacOS
 brew install node
 
