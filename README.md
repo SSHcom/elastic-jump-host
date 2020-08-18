@@ -1,4 +1,4 @@
-# PrivX Extender on AWS
+# Elastic Jump Host on AWS
 
 When deploying EC2-based workloads, using an AWS VPC with private subnets is the standard way to achieve the needed security and isolation. Accessing the instances becomes a challenge as the means of entry need be enabled both on the network and credential level - not to forget that the configuration lifecycle needs to also be managed. 
 
