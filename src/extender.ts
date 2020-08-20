@@ -87,9 +87,11 @@ export class Extender extends cdk.Construct {
 
     new ecs.FargateService(this, 'Service', {
       cluster,
+      assignPublicIp: false,
       desiredCount: 1,
       taskDefinition,
       serviceName: props.name,
+      vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE },
     })
   }
 

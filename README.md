@@ -120,6 +120,8 @@ cdk deploy extender-yourname \
 
 10. In a few minutes, your own instance of PrivX Extender is available. Login to PrivX to observe its status.
 
+Please note, the elastic jump host is deployed to private subnet, your might encounter [following issues](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_cannot_pull_image.html) if your VPC is not properly configured. [VPC with public and private subnets](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html) is the recommended configuration for the elastic jump host operations.
+
 
 ## Next Steps
 
