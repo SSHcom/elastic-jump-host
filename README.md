@@ -47,7 +47,7 @@ The latest version of Infrastructure as a Code is available at the main branch o
 
 3. Clone extender-on-aws repository
 ```bash
-git clone https://github.com/SSHcom/extender-on-aws
+git clone https://github.com/SSHcom/elastic-jump-host
 cd extender-on-aws
 ```
 
@@ -120,14 +120,19 @@ cdk deploy extender-yourname \
 
 10. In a few minutes, your own instance of PrivX Extender is available. Login to PrivX to observe its status.
 
-Please note, the elastic jump host is deployed to private subnet, your might encounter [following issues](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_cannot_pull_image.html) if your VPC is not properly configured. [VPC with public and private subnets](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html) is the recommended configuration for the elastic jump host operations.
+**Please note**, the elastic jump host is deployed to private subnet, your might encounter [following issues](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_cannot_pull_image.html) if your VPC is not properly configured. [VPC with public and private subnets](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html) is the recommended configuration for the elastic jump host operations. Either [AWS CDK](https://docs.aws.amazon.com/cdk/api/latest/docs/aws-ec2-readme.html#vpc) or [Cloud Formation template](https://docs.aws.amazon.com/codebuild/latest/userguide/cloudformation-vpc-template.html) are easiest way to manage and configure VPC.
 
 
 ## Next Steps
 
-Usage of [AWS Host Directory](https://help.ssh.com/support/solutions/articles/36000194728-getting-started-with-privx#privx-gettingstarted-hostdirectories) is an easiest way to on-board hosts from your AWS account. Please note, this stack creates AWS User `extender-yourname-hostscan` with only `ec2:Describe*` permission. Use it for the directory definition. 
+The **access to SSH target hosts** in your VPC is governed by the role `yourname`. It is mandatory to spawn AWS EC2 instances so that they are associated with the role and discoverable by PrivX. AWS EC2 instances must be launched with ssh key bound to the role `yourname` and define instance tags:
 
-As a post install stage, you can validate functionality of PrivX Extender with example SSH targets. Use this example to automate your IaC delivery.
+```
+privx-ssh-principals=ec2-user=yourname
+privx-extender=yourname
+```  
+
+We made an IaC example for you that automates delivery of EC2 instances with required configuration: 
 
 ```bash
 cdk example/ec2-ssh-targets
@@ -137,6 +142,12 @@ cdk deploy ec2-ssh-targets \
   -c name=yourname \
   -c vpc=vpc-00000000000000000
 ```
+
+The [**AWS Host Directory**](https://help.ssh.com/support/solutions/articles/36000194728-getting-started-with-privx#privx-gettingstarted-hostdirectories) is the solution to discover target hosts from your AWS account. Please note, the extender stack creates AWS User `extender-yourname-hostscan` with only `ec2:Describe*` permission. Use it for the directory definition. Do not forget to check in host update options from PrivX UI:
+* automatically update host service addresses
+* import host instance tags from the directory
+
+Finally, you **grant** the role `yourname` to users in your PrivX workspace.
 
 
 ## Afterwords 
