@@ -132,7 +132,7 @@ privx-ssh-principals=ec2-user=yourname
 privx-extender=yourname
 ```  
 
-We made an IaC example for you that automates delivery of EC2 instances with required configuration: 
+We made an IaC example for you. It automates delivery of EC2 instances with required configuration: 
 
 ```bash
 cdk example/ec2-ssh-targets
