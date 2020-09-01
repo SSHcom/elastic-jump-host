@@ -2,7 +2,7 @@
 
 When deploying EC2-based workloads, using an AWS VPC with private subnets is the standard way to achieve the needed security and isolation. Accessing the instances becomes a challenge as the means of entry need be enabled both on the network and credential level - not to forget that the configuration lifecycle needs to also be managed. 
 
-PrivX Extender along with [PrivX SaaS](https://signup.privx.io/leanpam/) implements a Zero Trust, passwordless and keyless access solution for EC2 instances.
+PrivX Extender along with [PrivX SaaS](https://signup.privx.io/free/) implements a Zero Trust, passwordless and keyless access solution for EC2 instances.
 
 
 ## Challenge 
@@ -18,9 +18,9 @@ Think beyond VPNs, dumb one-off jump hosts or bastion hosts...
 
 ## Inspiration
 
-Throughout the years, having observed how permanent passwords and left-behind, forgotten credentials still grant access to critical environments years after they were created and needed, we started the [PrivX SaaS](https://signup.privx.io/leanpam/) projects. We wanted to rid the world of passwords and keys laying on disk, and of standing privileges in general.
+Throughout the years, having observed how permanent passwords and left-behind, forgotten credentials still grant access to critical environments years after they were created and needed, we started the [PrivX SaaS](https://signup.privx.io/free/) projects. We wanted to rid the world of passwords and keys laying on disk, and of standing privileges in general.
 
-[PrivX SaaS](https://signup.privx.io/leanpam/) provides a solution for granting just in time access only for the needed resources, often called Zero Trust access. The solution automates the process of granting and revoking access by integrating with an existing identity management system (it also comes with its own!) and ensures that the users have one click access to right infrastructure resources with correct privileges. It also provides full audit trail and monitoring which is vital if your users are handling sensitive data or if you need to provide access for 3rd parties to your environment. All access to enterprise resources is fully authenticated, fully authorized, and fully encrypted based upon device state and user credentials.
+[PrivX SaaS](https://signup.privx.io/free/) provides a solution for granting just in time access only for the needed resources, often called Zero Trust access. The solution automates the process of granting and revoking access by integrating with an existing identity management system (it also comes with its own!) and ensures that the users have one click access to right infrastructure resources with correct privileges. It also provides full audit trail and monitoring which is vital if your users are handling sensitive data or if you need to provide access for 3rd parties to your environment. All access to enterprise resources is fully authenticated, fully authorized, and fully encrypted based upon device state and user credentials.
 
 PrivX Extender enables PrivX to reach firewalled private networks or virtual private clouds. Once deployed to a private network, it establishes a number of secure websocket connections to PrivX SaaS for routing traffic from the end users accessing PrivX to the target network. This project will provide IaaC (Infrastructure as a Code) deployment of PrivX Extender to an AWS account.
 
@@ -38,10 +38,10 @@ The project utilizes serverless to run the PrivX Extender on the AWS account - e
 
 ## Getting Started
 
-The latest version of Infrastructure as a Code is available at the main branch of this repository. All development, including new features and bug fixes, take place on the master branch using forking and pull requests as described in contribution guidelines. If you find any issue with the project or missing a feature please open an [issue to us](https://github.com/SSHcom/extender-on-aws/issues).
+The latest version of Infrastructure as a Code is available at the main branch of this repository. All development, including new features and bug fixes, take place on the master branch using forking and pull requests as described in contribution guidelines. If you find any issue with the project or missing a feature please open an [issue to us](https://github.com/SSHcom/elastic-jump-host/issues).
 
 
-1. Sign Up for [PrivX SaaS](https://signup.privx.io/leanpam/).
+1. Sign Up for [PrivX SaaS](https://signup.privx.io/free/).
 
 2. Obtain [access to target AWS Account](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html). You shall have the ability to create/delete AWS resources. Ultimately, you are deploying this solution to your own AWS account.
 
@@ -152,7 +152,7 @@ Finally, you **grant** the role `yourname` to users in your PrivX workspace.
 
 ## Afterwords 
 
-Access management with [PrivX SaaS](https://signup.privx.io/leanpam/) is different to compare with traditional bastion solution: 
+Access management with [PrivX SaaS](https://signup.privx.io/free/) is different to compare with traditional bastion solution: 
 * all target hosts are accessible via a central cloud service, either via browser or native SSH/RDP client;
 * instead of using a publicly visible bastion server, the PrivX extender is deployed on the private subnet. It forms an outbound connection to the central management instance, no inbound ports need to be opened;
 * PrivX SaaS acts as a central authority with no private keys or standing credentials on the laptops;
@@ -161,7 +161,7 @@ Access management with [PrivX SaaS](https://signup.privx.io/leanpam/) is differe
 
 ## Bugs
 
-If you experience any issues with the library, please let us know via [GitHub issues](https://github.com/SSHcom/extender-on-aws/issues). We appreciate detailed and accurate reports that help us to identify and replicate the issue.
+If you experience any issues with the library, please let us know via [GitHub issues](https://github.com/SSHcom/elastic-jump-host/issues). We appreciate detailed and accurate reports that help us to identify and replicate the issue.
 
 * **Specify** the configuration of your environment. Include which operating system you use and the versions of runtime environments.
 
