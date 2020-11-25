@@ -8,7 +8,7 @@ RUN cd /usr/local/cmd/xconf && go build
 ##
 FROM centos:7
 
-RUN yum install -y https://info.ssh.com/hubfs/Downloads/Features/Extender/Versions%20for%20RHEL7/PrivX-Extender-13.1-97_4a16f5976.x86_64.rpm
+RUN yum install -y https://info.ssh.com/hubfs/Downloads/Features/Extender/Versions%20for%20RHEL7/PrivX-Extender-16.0-75_694095ecd.x86_64.rpm
 
 COPY --from=0 /usr/local/cmd/xconf/xconf /usr/local/bin
 

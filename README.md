@@ -87,9 +87,12 @@ cdk bootstrap aws://${CDK_DEFAULT_ACCOUNT}/${CDK_DEFAULT_REGION}
 
 8. Obtain access/secret keys from PrivX Instance so that the extender is able to configure an access to your private subnet. 
   - Login as `superuser`
+  - Go to: Settings > Roles
+  - Add Role `extender.registrar`
+  - Give the role permissions: `api-clients-manage`, `roles-view`, `roles-manage`
   - Go to: Settings > Deployment > Integrate with PrivX Using API clients
-  - Create new API client (or use existing one)
-  - Give a client permissions: `api-clients-manage`, `roles-view`, `roles-manage`
+  - Add API Client `extender.registrar`
+  - Grant the role to the client
   - Deployment process requires: `OAuth Client Secret`, `API Client ID` and `API Client Secret` values. 
 
 9. Use AWS CDK command line tools to deploy PrivX extender to your AWS Account
